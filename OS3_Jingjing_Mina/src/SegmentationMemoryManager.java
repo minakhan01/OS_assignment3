@@ -1,20 +1,23 @@
-import java.util.List;
+import java.util.HashMap;
 
 public class SegmentationMemoryManager extends MemoryManager {
 
 	// currently active processes in memory, containing id/size/segments start
-	private List<Process> activeProcesses;
+	private HashMap<Integer, SegmentedProcess> activeProcesses;
 	
 	// TODO need to decide what data structure we want for tracking
 	private int[] memory;
 	
 	// total memory size available
 	private int memorySize;
+	
+	HoleList holelist;
 
 	public SegmentationMemoryManager(int bytes) {
-
+		activeProcesses=new HashMap<Integer, SegmentedProcess>();
 		this.memorySize = bytes;
 		this.memory = new int[memorySize];
+		holelist=new HoleList(bytes);
 	}
 
 	/**
@@ -25,9 +28,9 @@ public class SegmentationMemoryManager extends MemoryManager {
 	public int allocate(int bytes, int pid, int text_size, int data_size,
 			int heap_size) {
  
-		Process newProcess = new Process(pid, bytes);
-		activeProcesses.add(newProcess);
-
+		SegmentedProcess newProcess = new SegmentedProcess(pid, bytes, text_size, data_size, heap_size);
+		activeProcesses.put(Integer.valueOf(pid), newProcess);
+		int text_hole=holelist.bestFitIndex(text_size);
 		// TODO allocate memoroy
 		// TODO do sth with the segments
 

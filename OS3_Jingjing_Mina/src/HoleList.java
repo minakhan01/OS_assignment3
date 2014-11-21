@@ -8,10 +8,11 @@ public class HoleList{
 
 	   private int size;            // Number of elements in holeList
 
-	   public HoleList()
+	   public HoleList(int initialSize)
 	   {
-	      size = 0;
+	      size = 1;
 	      holeList = new Hole[CAPACITY];
+	      holeList[0]=new Hole(0, initialSize);
 	   }
 
 	 /**
@@ -155,6 +156,20 @@ public class HoleList{
 			   }
 			   buildHeap();
 		   }
+	   }
+	   
+	   public Hole reAllocateHole(int requiredSize){
+		   int hole_index=bestFitIndex(requiredSize);
+		   Hole hole=holeList[hole_index];
+		   removeIndex(hole_index);
+		   if (hole.getSize()<requiredSize+16)
+			   return hole;
+		   else{
+			   Hole newHole=new Hole(hole.getStartingPos()+requiredSize, hole.getSize()-requiredSize);
+			   insert(newHole);
+			   return new Hole(hole.getStartingPos(), requiredSize);
+		   }
+			   
 	   }
 	   
 	   private void doubleSize()
