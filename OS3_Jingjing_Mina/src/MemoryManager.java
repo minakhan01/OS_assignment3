@@ -1,12 +1,36 @@
 public class MemoryManager {
+
+	private MemoryManager currentMemoryManager;
+	
+	public MemoryManager()
+	{
+		
+	}
+	
 	public MemoryManager(int bytes, int policy)
-	{   // initialize memory with these many bytes.
+	{   
+		// initialize memory with these many bytes.
 	    // Use segmentation if policy==0, paging if policy==1
+		if(policy == 0)
+		{
+			currentMemoryManager = new SegmentationMemoryManager(bytes);
+			
+		}else if(policy == 1)
+		{
+			currentMemoryManager = new PagingMemoryManager(bytes);
+			
+		}else
+		{
+			System.out.println("policy entered not 1 or 0 ");
+		}
 	 
 	}
 	 
 	public int allocate(int bytes, int pid, int text_size, int data_size, int heap_size)
-	{ // allocate this many bytes to the process with this id
+	{
+		return currentMemoryManager.allocate(bytes, pid, text_size, data_size, heap_size);
+		
+	  // allocate this many bytes to the process with this id
 	  //   assume that each pid is unique to a process
 	  // if using the Segmentation allocator: text_size, data_size, and heap_size
 	  //   are the size of each segment. Verify that:
@@ -20,14 +44,18 @@ public class MemoryManager {
 	}
 	 
 	public int deallocate(int pid)
-	{ //deallocate memory allocated to this process
+	{
+		return currentMemoryManager.deallocate(pid);
+		//deallocate memory allocated to this process
 	  // return 1 if successful, -1 otherwise with an error message
 	 
 	}
 	 
 	 
 	public void printMemoryState()
-	{ // print out current state of memory
+	{ 
+		currentMemoryManager.printMemoryState();
+	  // print out current state of memory
 	  // the output will depend on the memory allocator being used.
 
 	  // SEGMENTATION Example: 
