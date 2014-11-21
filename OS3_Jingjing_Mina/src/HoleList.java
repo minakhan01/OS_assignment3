@@ -4,7 +4,7 @@ import java.util.Arrays;
 public class HoleList{
 	
 	private Hole[] holeList;
-	   private static final int CAPACITY = 2;
+	   private static final int CAPACITY = 10;
 
 	   private int size;            // Number of elements in holeList
 
