@@ -3,7 +3,7 @@ public class Process {
 	
 	private int id;
 	private int size;
-	private int[] segments;
+	private Segment[] segments;
 	
 	
 	public Process(int id, int size) {
