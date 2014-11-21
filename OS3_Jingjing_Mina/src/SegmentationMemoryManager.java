@@ -1,4 +1,5 @@
 import java.util.HashMap;
+import java.util.Hashtable;
 
 public class SegmentationMemoryManager extends MemoryManager {
 
@@ -6,7 +7,7 @@ public class SegmentationMemoryManager extends MemoryManager {
 	private HashMap<Integer, SegmentedProcess> activeProcesses;
 	
 	// TODO need to decide what data structure we want for tracking
-	private int[] memory;
+	private Hashtable<Integer, Hole[]> memoryUsed;
 	
 	// total memory size available
 	private int memorySize;
@@ -16,7 +17,7 @@ public class SegmentationMemoryManager extends MemoryManager {
 	public SegmentationMemoryManager(int bytes) {
 		activeProcesses=new HashMap<Integer, SegmentedProcess>();
 		this.memorySize = bytes;
-		this.memory = new int[memorySize];
+		this.memoryUsed = new Hashtable<Integer, Hole[]>();
 		holelist=new HoleList(bytes);
 	}
 
@@ -28,24 +29,38 @@ public class SegmentationMemoryManager extends MemoryManager {
 	public int allocate(int bytes, int pid, int text_size, int data_size,
 			int heap_size) {
  
-		SegmentedProcess newProcess = new SegmentedProcess(pid, bytes, text_size, data_size, heap_size);
-		activeProcesses.put(Integer.valueOf(pid), newProcess);
-		int text_hole=holelist.bestFitIndex(text_size);
-		// TODO allocate memoroy
-		// TODO do sth with the segments
-
 		if (!(text_size + data_size + heap_size == bytes)) {
 			System.out.println("input sizes of segments wrong!!!!!!!! ");
 			return -1;
 		}
+		
+		SegmentedProcess newProcess = new SegmentedProcess(pid, bytes, text_size, data_size, heap_size);
+		activeProcesses.put(Integer.valueOf(pid), newProcess);
+		Hole text_hole=holelist.reAllocateHole(text_size);
+		Hole data_hole=holelist.reAllocateHole(data_size);
+		Hole heap_hole=holelist.reAllocateHole(heap_size);
+		Hole[] segmentHoles=new Hole[3];
+		segmentHoles[0]=text_hole;
+		segmentHoles[1]=data_hole;
+		segmentHoles[2]=heap_hole;
+		memoryUsed.put(Integer.valueOf(pid), segmentHoles);
 
 		return 1;
 	}
 
 	public int deallocate(int pid) {
+		if (!activeProcesses.containsKey(Integer.valueOf(pid)))
+			return -1;
+		else{
+			
+			SegmentedProcess removeProcess=activeProcesses.get(Integer.valueOf(pid));
+			activeProcesses.remove(Integer.valueOf(pid));
+			Hole[] createHole=memoryUsed.get(Integer.valueOf(pid));
+			holelist.createCombineHoles(createHole);
+		}
 		// deallocate memory allocated to this process
 		// return 1 if successful, -1 otherwise with an error message
-
+		return 1;
 	}
 
 	public void printMemoryState() {

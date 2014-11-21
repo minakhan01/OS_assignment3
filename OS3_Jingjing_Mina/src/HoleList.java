@@ -186,4 +186,9 @@ public class HoleList{
 	      return out;
 	   }
 
+	public void createCombineHoles(Hole[] createHole) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
