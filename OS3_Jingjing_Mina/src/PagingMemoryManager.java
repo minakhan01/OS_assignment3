@@ -40,10 +40,10 @@ public class PagingMemoryManager extends MemoryManager {
 		}
 		
 		// so far no page is in use
-		this.pagesInUse = new ArrayList<>();
+		this.pagesInUse = new ArrayList<Page>();
 		
 		// and no process is active
-		this.activeProcesses = new ArrayList<>();	
+		this.activeProcesses = new ArrayList<Process>();	
 	}
 
 	/**
