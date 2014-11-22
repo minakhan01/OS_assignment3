@@ -113,7 +113,7 @@ public class HoleList{
 		   int leftChild = 2*currentIndex+1;
 		   int rightChild = leftChild+1;
 		   
-		   while (leftChild<holeList.length){
+		   while (leftChild< size ){
 			   currentSize=holeList[currentIndex].getSize();
 			   leftSize=holeList[leftChild].getSize();
 			   if (currentSize==requiredSize)
