@@ -1,10 +1,14 @@
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 
 // http://www.cs.cmu.edu/~adamchik/15-121/lectures/Binary%20Heaps/code/Heap.java
 public class HoleList{
 	
 	private Hole[] holeList;
+	private Hole[] holeListPosSorted;
 	   private static final int CAPACITY = 10;
+	   HolePositionComparator hpc;
 
 	   private int size;            // Number of elements in holeList
 
@@ -13,20 +17,10 @@ public class HoleList{
 	      size = 1;
 	      holeList = new Hole[CAPACITY];
 	      holeList[0]=new Hole(0, initialSize);
+	      hpc=new HolePositionComparator();
+	      
 	   }
 
-	 /**
-	  * Construct the binary holeList given an array of items.
-	  */
-	   public HoleList(Hole[] array)
-	   {
-	      size = array.length;
-	      holeList = new Hole[array.length+1];
-
-	      System.arraycopy(array, 0, holeList, 1, array.length);//we do not use 0 index
-
-	      buildHeap();
-	   }
 	 /**
 	  *   runs at O(size)
 	  */
@@ -138,7 +132,20 @@ public class HoleList{
 		   
 	   }
 	   
-	   public void removeIndex(int index){
+	   public int find(Hole hole){
+		   for (int i=0;i<holeList.length-1;i++){
+				if (holeList[i].getStartingPos()==hole.getStartingPos())
+					return i;
+			}
+		   return -1;
+	   }
+	   
+	   public void remove(Hole hole){
+		   int removeIndex=find(hole);
+		   removeByIndex(removeIndex);
+	   } 
+	   
+	   public void removeByIndex(int index){
 		   if (index<size){
 			   size--;
 			   Hole[] prev_holeList=holeList;
@@ -161,7 +168,7 @@ public class HoleList{
 	   public Hole reAllocateHole(int requiredSize){
 		   int hole_index=bestFitIndex(requiredSize);
 		   Hole hole=holeList[hole_index];
-		   removeIndex(hole_index);
+		   removeByIndex(hole_index);
 		   if (hole.getSize()<requiredSize+16)
 			   return hole;
 		   else{
@@ -203,6 +210,41 @@ public class HoleList{
 		insertHole(createHole[i]);
 		}}
 		
+	}
+	
+	public void insertHole(Hole hole){
+		insert(hole);
+		holeListPosSorted=holeList.clone();
+		Arrays.sort(holeListPosSorted, new HolePositionComparator());
+		int holeIndex=-1;
+		for (int i=0;i<holeListPosSorted.length-1;i++){
+			if (holeListPosSorted[i].getStartingPos()==hole.getStartingPos())
+				holeIndex=i;
+		}
+		if (holeIndex+1<holeListPosSorted.length && holeIndex>0){
+			if (shouldCombine(holeListPosSorted[holeIndex-1], holeListPosSorted[holeIndex]) &&
+					shouldCombine(holeListPosSorted[holeIndex], holeListPosSorted[holeIndex+1])){
+			remove(holeListPosSorted[holeIndex-1]);
+			remove(holeListPosSorted[holeIndex+1]);
+			remove(hole);
+			insert(new Hole(holeListPosSorted[holeIndex-1].getStartingPos(), holeListPosSorted[holeIndex-1].getSize()+hole.getSize()+holeListPosSorted[holeIndex+1].getSize()));
+		}}
+		if (holeIndex>0){
+			if (shouldCombine(holeListPosSorted[holeIndex-1], holeListPosSorted[holeIndex])){
+				remove(holeListPosSorted[holeIndex-1]);
+				remove(holeListPosSorted[holeIndex]);
+				insert(new Hole(holeListPosSorted[holeIndex-1].getStartingPos(), holeListPosSorted[holeIndex-1].getSize()+holeListPosSorted[holeIndex].getSize()));
+			}
+			}
+			
+		if (holeIndex+1<holeListPosSorted.length){
+			if (shouldCombine(holeListPosSorted[holeIndex], holeListPosSorted[holeIndex])){
+				remove(holeListPosSorted[holeIndex]);
+				remove(holeListPosSorted[holeIndex+1]);
+				insert(new Hole(holeListPosSorted[holeIndex].getStartingPos(), holeListPosSorted[holeIndex].getSize()+holeListPosSorted[holeIndex+1].getSize()));
+			}
+			}	
+
 	}
 	
 	private boolean shouldCombine(Hole hole1,Hole hole2){
