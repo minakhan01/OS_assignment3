@@ -152,7 +152,9 @@ public class HoleList{
 			   holeList=new Hole[size];
 			   int newIndex=0;
 			   Hole[] first= Arrays.copyOfRange(prev_holeList,0 ,index);
-			   Hole[] second= Arrays.copyOfRange(prev_holeList,index+1,prev_holeList.length);
+			   Hole[] second= Arrays.copyOfRange(prev_holeList,index+1,size);
+			   System.out.println(first.length);
+			   System.out.println(second.length);
 			   for (int i=0; i<first.length;i++){
 				   holeList[newIndex]=first[i];
 				   newIndex++;
