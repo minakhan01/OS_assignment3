@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 public class HoleList {
 
@@ -21,6 +22,7 @@ public class HoleList {
 		System.out.println("inserting");
 		int index = bestFitIndex(x.getSize());
 		holeList.add(index, x);
+		Collections.sort(holeList);
 	}
 	
 	public int bestFitIndex(int requiredSize) {
