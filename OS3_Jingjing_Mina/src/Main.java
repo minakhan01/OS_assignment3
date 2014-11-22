@@ -25,11 +25,7 @@ public class Main {
 		            		  
 		            	  int memory_size=Integer.parseInt(words[0]);
 		            	  int policy=Integer.parseInt(words[1]);
-		            	  if (policy==1)
-		            		  mm=new SegmentationMemoryManager(memory_size);
-		            	  else if (policy==0)
-		            		  mm=new PagingMemoryManager(memory_size);
-		            	  }
+		            	  mm=new MemoryManager(memory_size,policy);}
 		            	  
 		            	  catch(NumberFormatException nfe)  {
 		            		  if(words[0].equals("D")){
