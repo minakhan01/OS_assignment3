@@ -166,7 +166,7 @@ public class HoleList{
 			   return hole;
 		   else{
 			   Hole newHole=new Hole(hole.getStartingPos()+requiredSize, hole.getSize()-requiredSize);
-			   insert(newHole);
+			   insertHole(newHole);
 			   return new Hole(hole.getStartingPos(), requiredSize);
 		   }
 			   
@@ -187,8 +187,29 @@ public class HoleList{
 	   }
 
 	public void createCombineHoles(Hole[] createHole) {
-		// TODO Auto-generated method stub
+	if (shouldCombine(createHole[0], createHole[1]) && shouldCombine(createHole[1], createHole[2])){
+		insertHole(new Hole(createHole[0].getStartingPos(), createHole[0].getSize()+createHole[1].getSize()+createHole[2].getSize()));
+	}
+	else if(shouldCombine(createHole[0], createHole[1])){
+		insertHole(new Hole(createHole[0].getStartingPos(), createHole[0].getSize()+createHole[1].getSize()));
+		insertHole(createHole[2]);
+	}
+	else if(shouldCombine(createHole[1], createHole[2])){
+		insertHole(createHole[0]);
+		insertHole(new Hole(createHole[1].getStartingPos(), createHole[2].getSize()+createHole[1].getSize()));
+	}
+	else{
+		for (int i=0;i<createHole.length; i++){
+		insertHole(createHole[i]);
+		}}
 		
+	}
+	
+	private boolean shouldCombine(Hole hole1,Hole hole2){
+		if ((hole1.getStartingPos()+hole1.getSize())==hole2.getStartingPos())
+			return true;
+		else
+			return false;
 	}
 
 }
