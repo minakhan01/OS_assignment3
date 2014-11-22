@@ -55,20 +55,28 @@ public class PagingMemoryManager extends MemoryManager {
 
 		// allocate this many bytes to the process with this id
 		Process newProcess = new Process(pid, bytes);
-		activeProcesses.add(newProcess);
 		
 		System.out.println("allocating process" + pid + " size " + bytes);
 
 		// TODO allocate memoroy
 		int sizeOfLastPage = bytes % 32;
-		int sizeNeededToFill = 32 - sizeOfLastPage;
-		int numPagesNeeded = (bytes + sizeNeededToFill)/32;
+		int sizeNeededToFill = (32 - sizeOfLastPage);
+		int numPagesNeeded = 0;
+		if(sizeOfLastPage != 0)
+		{
+		 numPagesNeeded = (bytes + sizeNeededToFill)/32;
+		}else
+		{
+		 numPagesNeeded = (bytes)/32;
+		}
 		System.out.println("numPageNeeded = " + numPagesNeeded);
 
 
 		// check if sum of used pages and needed pages is over limit
 		if (pagesInUse.size() + numPagesNeeded <= totalPageNumber) {
 			
+			activeProcesses.add(newProcess);
+
 			System.out.println("allocating pages for process : " + newProcess.getId());
 			// initialize the pages array for the process to record
 			Page[] pagesForThisProcess = new Page[numPagesNeeded];
@@ -108,6 +116,7 @@ public class PagingMemoryManager extends MemoryManager {
 			return 1;
 			
 		} else {
+			
 			System.out.println("Not enough pages");
 			noMemoryNumber ++;
 			return -1;
@@ -181,6 +190,7 @@ public class PagingMemoryManager extends MemoryManager {
 
 		// PAGING Example:
 		// Memory size = 1024 bytes, total pages = 32
+		System.out.println("============================Printing==================================");
 		System.out.println("Meory size = " + memorySize + ", total pages = "
 				+ totalPageNumber);
 		// allocated pages = 6, free pages = 26
