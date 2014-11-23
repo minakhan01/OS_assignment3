@@ -56,8 +56,10 @@ public class HoleList {
             if (requiredSize < holeList.get(mid).getSize()){
             	best_index=mid;
             	hi = mid - 1;}
-            else if (requiredSize > holeList.get(mid).getSize()) 
+            else if (requiredSize > holeList.get(mid).getSize()){
+            	best_index=-1;
             	lo = mid + 1;
+            }
             else 
             	return mid;
         }		
@@ -87,6 +89,8 @@ public class HoleList {
 	public Hole reAllocateHole(int requiredSize) {
 		System.out.println("reallocating");
 		int hole_index = bestFitIndex(requiredSize);
+		if (hole_index==-1)
+			return null;
 		Hole hole = holeList.get(hole_index);
 		removeByIndex(hole_index);
 		if (hole.getSize() < requiredSize + 16)
