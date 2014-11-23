@@ -32,7 +32,7 @@ public class SegmentationMemoryManager extends MemoryManager {
 	 */
 	public int allocate(int bytes, int pid, int text_size, int data_size,
 			int heap_size) {
-		System.out.println("pid: "+pid);
+
 		if (!(text_size + data_size + heap_size == bytes)) {
 			System.out.println("input sizes of segments wrong!!!!!!!! ");
 			return -1;
@@ -43,7 +43,6 @@ public class SegmentationMemoryManager extends MemoryManager {
 				
 		Hole text_hole=holelist.reAllocateHole(text_size);
 		Hole data_hole=holelist.reAllocateHole(data_size);
-		System.out.println("data_hole "+data_hole);
 		Hole heap_hole=holelist.reAllocateHole(heap_size);
 		if(text_hole != null && data_hole != null && heap_hole != null)
 		{
@@ -55,10 +54,6 @@ public class SegmentationMemoryManager extends MemoryManager {
 		segmentHoles[2]=heap_hole;
 		SegmentedProcess newProcess = new SegmentedProcess(pid, bytes, text_size, text_hole.getStartingPos(), data_size, data_hole.getStartingPos(), heap_size, heap_hole.getStartingPos());
 		activeProcesses.put(Integer.valueOf(pid), newProcess);
-		System.out.println("segment hole: "+pid);
-		System.out.println(segmentHoles[0] +" "+ newProcess.getTextSize());
-		System.out.println(segmentHoles[1]+" "+ newProcess.getDataSize());
-		System.out.println(segmentHoles[2]+" "+ newProcess.getHeapSize());
 		memoryUsed.put(Integer.valueOf(pid), segmentHoles);
 		return 1;
 		}
@@ -128,10 +123,8 @@ public class SegmentationMemoryManager extends MemoryManager {
 			
 			SegmentedProcess sp=activeProcesses.get(processArray[i]);
 			Hole[] holes=memoryUsed.get(processArray[i]);
-			System.out.println(sp.getId()+" "+sp.getSize());
 			int allocation=0;
 			for (Hole hole: holes){
-				System.out.println(hole.getSize());
 				allocation += hole.getSize();
 			}
 			internalFragmentation=allocation-sp.getSize();
