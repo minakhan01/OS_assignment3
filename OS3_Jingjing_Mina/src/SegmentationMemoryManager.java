@@ -127,7 +127,7 @@ public class SegmentationMemoryManager extends MemoryManager {
 			for (Hole hole: holes){
 				allocation += hole.getSize();
 			}
-			internalFragmentation=allocation-sp.getSize();
+			internalFragmentation+=allocation-sp.getSize();
 		System.out.println("process id="+sp.getId()+", size="+sp.getSize()+" allocation="+allocation);
 		System.out.println("text start="+sp.get_startTextIndex()+", size="+sp.getTextSize());
 		System.out.println("data start="+sp.get_startDataIndex()+", size="+sp.getDataSize());

@@ -1,6 +1,6 @@
 import java.util.Comparator;
 
-
+// comparator based on hole position
 public class HolePositionComparator implements Comparator<Hole>{
 	
 	@Override

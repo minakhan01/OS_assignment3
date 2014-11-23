@@ -1,4 +1,5 @@
-
+// class representing a segment
+// segment has type, it's process id, space (size) and start position
 public class Segment {
 	SegmentType segmentType;
 	int space;

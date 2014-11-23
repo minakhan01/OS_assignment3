@@ -1,4 +1,5 @@
-
+// this class represent a segmented process
+// the process has a text, data and heap segment
 public class SegmentedProcess {
 	
 	private int id;
