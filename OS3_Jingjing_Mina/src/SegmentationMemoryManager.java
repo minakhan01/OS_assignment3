@@ -14,6 +14,8 @@ public class SegmentationMemoryManager extends MemoryManager {
 	
 	// total memory size available
 	private int memorySize;
+	int noEnoughMemory=0;
+	int externalFrag=0;
 	
 	HoleList holelist;
 
@@ -36,19 +38,29 @@ public class SegmentationMemoryManager extends MemoryManager {
 			System.out.println("input sizes of segments wrong!!!!!!!! ");
 			return -1;
 		}
+		if (totalmemoryAllocated()+bytes>memorySize){
+			noEnoughMemory++;
+			return -1;}
 		
 		SegmentedProcess newProcess = new SegmentedProcess(pid, bytes, text_size, data_size, heap_size);
-		activeProcesses.put(Integer.valueOf(pid), newProcess);
+		
 		Hole text_hole=holelist.reAllocateHole(text_size);
 		Hole data_hole=holelist.reAllocateHole(data_size);
 		Hole heap_hole=holelist.reAllocateHole(heap_size);
+		if(text_hole != null || data_hole != null || heap_hole != null)
+		{
+		activeProcesses.put(Integer.valueOf(pid), newProcess);
 		Hole[] segmentHoles=new Hole[3];
 		segmentHoles[0]=text_hole;
 		segmentHoles[1]=data_hole;
 		segmentHoles[2]=heap_hole;
 		memoryUsed.put(Integer.valueOf(pid), segmentHoles);
-
 		return 1;
+		}
+		else{
+			externalFrag++;
+			return -1;
+			}
 	}
 
 	public int deallocate(int pid) {
@@ -130,9 +142,12 @@ public class SegmentationMemoryManager extends MemoryManager {
 		
 		// Total Internal Fragmentation = 10 bytes
 		System.out.println("Total Internal Fragmentation = "+internalFragmentation+" bytes");
-		
+
 		// Failed allocations (No memory) = 2
+		System.out.println("Failed allocations (No memory) = "+noEnoughMemory);
+		
 		// Failed allocations (External Fragmentation) = 7
+		System.out.println("Failed allocations (External Fragmentation) = "+externalFrag);
 		//
 	}
 
