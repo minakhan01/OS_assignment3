@@ -76,22 +76,6 @@ public class Process {
 	}
 
 	/**
-	 * @param id
-	 *            the id to set
-	 */
-	private void setId(int id) {
-		this.id = id;
-	}
-
-	/**
-	 * @param size
-	 *            the size to set
-	 */
-	private void setSize(int size) {
-		this.size = size;
-	}
-
-	/**
 	 * Process id size number of pages
 	 * Virt Page 0 -> Phys Page 0 used: 32 bytes Virt Page 1 -> Phys Page 3
 	 * used: 32 bytes Virt Page 2 -> Phys Page 4 used: 31 bytes
