@@ -19,6 +19,7 @@ public class SegmentationMemoryManager extends MemoryManager {
 	HoleList holelist;
 
 	public SegmentationMemoryManager(int bytes) {
+		// initialize active processes, memory used and hole list
 		activeProcesses=new HashMap<Integer, SegmentedProcess>();
 		this.memorySize = bytes;
 		this.memoryUsed = new Hashtable<Integer, Hole[]>();
@@ -37,13 +38,23 @@ public class SegmentationMemoryManager extends MemoryManager {
 			System.out.println("input sizes of segments wrong!!!!!!!! ");
 			return -1;
 		}
+		
+		// check for lack of memory 
+		// if there isn't enough memory, increment noEnoughMemory
 		if (totalmemoryAllocated()+bytes>memorySize){
 			noEnoughMemory++;
 			return -1;}
-				
+		
+		// get the holes/memory chunks alloted to each of the segment
 		Hole text_hole=holelist.reAllocateHole(text_size);
 		Hole data_hole=holelist.reAllocateHole(data_size);
 		Hole heap_hole=holelist.reAllocateHole(heap_size);
+		
+		// if each segment can be alloted a memory chunk
+		// create a segmented process and 
+		// insert in active processes and memory used
+		// memory used knows the size of block alloted to each segment which may
+		//  be different from the size of each segment
 		if(text_hole != null && data_hole != null && heap_hole != null)
 		{
 		
@@ -58,16 +69,22 @@ public class SegmentationMemoryManager extends MemoryManager {
 		return 1;
 		}
 		else{
+			// increment external fragmentation counter when can 
+			// find hole for at least one segment of process
 			externalFrag++;
 			return -1;
 			}
 	}
 
+	// deallocate
 	public int deallocate(int pid) {
-		if (!activeProcesses.containsKey(Integer.valueOf(pid)))
-			return -1;
+		// do nothing if can't find the process
+		if (!activeProcesses.containsKey(Integer.valueOf(pid))){
+			System.out.print("no such process");
+			return -1;}
 		else{
-			
+			// remove from active processes and memory used and
+			//  create appropriate hole using createCombineHoles
 			SegmentedProcess removeProcess=activeProcesses.get(Integer.valueOf(pid));
 			activeProcesses.remove(Integer.valueOf(pid));
 			Hole[] createHole=memoryUsed.get(Integer.valueOf(pid));
@@ -79,6 +96,7 @@ public class SegmentationMemoryManager extends MemoryManager {
 		return 1;
 	}
 	
+	// calculate total memory allocated in memory used
 	private int totalmemoryAllocated(){
 		int memoryAllocated=0;
 		Iterator<Integer> memoryUsedIter=memoryUsed.keySet().iterator();
