@@ -34,14 +34,14 @@ public class HoleList {
 	 * Inserts a new item
 	 */
 	public void insert(Hole x) {
-		System.out.println("inserting");
+//		System.out.println("inserting");
 		int index = bestFitIndex(x.getSize());
 		holeList.add(index, x);
 		Collections.sort(holeList);
 	}
 	
 	public int bestFitIndex(int requiredSize) {
-		System.out.println("best fit");
+//		System.out.println("best fit");
 		
 		int lo = 0;
         int hi = holeList.size() - 1;
@@ -67,7 +67,7 @@ public class HoleList {
 	}
 
 	public int find(Hole hole) {
-		System.out.println("finding");
+//		System.out.println("finding");
 		for (int i = 0; i < holeList.size(); i++) {
 			if (holeList.get(i).getStartingPos() == hole.getStartingPos())
 				return i;
@@ -76,18 +76,17 @@ public class HoleList {
 	}
 
 	public void remove(Hole hole) {
-		System.out.println("removing");
+//		System.out.println("removing");
 		int removeIndex = find(hole);
 		removeByIndex(removeIndex);
 	}
 
 	public void removeByIndex(int index) {
-		System.out.println("removing by index");
 		holeList.remove(index);
 	}
 
 	public Hole reAllocateHole(int requiredSize) {
-		System.out.println("reallocating");
+//		System.out.println("reallocating");
 		int hole_index = bestFitIndex(requiredSize);
 		if (hole_index==-1)
 			return null;
@@ -105,7 +104,7 @@ public class HoleList {
 	}
 
 	public void createCombineHoles(Hole[] createHole) {
-		System.out.println("combining holes");
+//		System.out.println("combining holes");
 		if (shouldCombine(createHole[0], createHole[1])
 				&& shouldCombine(createHole[1], createHole[2])) {
 			insertHole(new Hole(createHole[0].getStartingPos(),
@@ -127,7 +126,7 @@ public class HoleList {
 	}
 
 	public void insertHole(Hole hole) {
-		System.out.println("inserting holes");
+//		System.out.println("inserting holes");
 		insert(hole);
 		holeListPosSorted=new Hole[holeList.size()];
 		holeListPosSorted=holeList.toArray(holeListPosSorted);

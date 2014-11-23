@@ -9,14 +9,17 @@ public class SegmentedProcess {
 	private int startHeapIndex;
 	
 	
-	public SegmentedProcess(int id, int size, int text_size, int data_size,
-			int heap_size) {
+	public SegmentedProcess(int id, int size, int text_size, int text_start, int data_size,
+			int data_start, int heap_size, int heap_start) {
 		this.id = id;
 		this.size = size;
 		segments=new Segment[3];
-		segments[0]=new Segment(id, SegmentType.TEXT, text_size);
-		segments[1]=new Segment(id, SegmentType.STACK, data_size);
-		segments[2]=new Segment(id, SegmentType.HEAP, heap_size);
+		startTextIndex=text_start;
+		startDataIndex=data_start;
+		startHeapIndex=heap_start;
+		segments[0]=new Segment(id, SegmentType.TEXT, text_size, text_start);
+		segments[1]=new Segment(id, SegmentType.STACK, data_size, data_start);
+		segments[2]=new Segment(id, SegmentType.HEAP, heap_size, heap_start);
 	}
 		
 	/**

@@ -16,7 +16,7 @@ public class Main {
 		        	  String nextString=sc.nextLine();
 		              String[] words=nextString.split(" ");
 		              int length=words.length;
-		              System.out.println(nextString);
+//		              System.out.println(nextString);
 		              switch(length){
 		              case 1:
 		            	  mm.printMemoryState();

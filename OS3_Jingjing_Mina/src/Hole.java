@@ -25,7 +25,7 @@ public class Hole implements Comparable<Hole>{
 	
 	@Override
 	public String toString(){
-		return String.valueOf(size);
+		return String.valueOf("startingPos: "+startingPos+" size: "+size);
 	}
 
 }
