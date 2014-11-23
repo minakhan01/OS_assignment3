@@ -32,7 +32,7 @@ public class SegmentationMemoryManager extends MemoryManager {
 	 */
 	public int allocate(int bytes, int pid, int text_size, int data_size,
 			int heap_size) {
-		
+		System.out.println("pid: "+pid);
 		if (!(text_size + data_size + heap_size == bytes)) {
 			System.out.println("input sizes of segments wrong!!!!!!!! ");
 			return -1;
