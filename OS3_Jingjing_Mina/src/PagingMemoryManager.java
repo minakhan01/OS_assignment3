@@ -100,11 +100,12 @@ public class PagingMemoryManager extends MemoryManager {
 
 			// initialize the pages array for the process to record
 			Page[] pagesForThisProcess = new Page[numPagesNeeded];
-
+			int lookUpStartIndex = 0;
 			// look for a page for each page needed
 			for (int i = 0; i < numPagesNeeded; i++) {
-				int index = findNextAvailablePage();
-
+				
+				int index = findNextAvailablePage(lookUpStartIndex);			
+				lookUpStartIndex = index+1;
 				// Found a page now
 				System.out.println("found page " + index + "for process"
 						+ newProcess.getId());
@@ -150,8 +151,9 @@ public class PagingMemoryManager extends MemoryManager {
 	 * 
 	 * @return the page position, -1 if not found
 	 */
-	private int findNextAvailablePage() {
-		for (int i = 0; i < totalPageNumber; i++) {
+	private int findNextAvailablePage(int startIndex) {
+		int i = startIndex;
+		for (; i < totalPageNumber; i++) {
 			if (!pages[i].isUsed()) {
 				return i;
 			}
