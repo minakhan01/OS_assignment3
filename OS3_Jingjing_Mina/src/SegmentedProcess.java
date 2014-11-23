@@ -31,6 +31,18 @@ public class SegmentedProcess {
 	public int getSize() {
 		return size;
 	}
+	
+	public int getTextSize() {
+		return segments[0].space;
+	}
+	
+	public int getDataSize() {
+		return segments[1].space;
+	}
+	
+	public int getHeapSize() {
+		return segments[2].space;
+	}
 
 	public void set_startTextIndex(int startTextIndex) {
 		this.startTextIndex = startTextIndex;

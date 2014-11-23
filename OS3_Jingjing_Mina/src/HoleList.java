@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
 
 public class HoleList {
 
@@ -14,7 +15,21 @@ public class HoleList {
 		hpc = new HolePositionComparator();
 
 	}
-
+	
+	public int numHole(){
+		return holeList.size();
+	}
+	
+	public String toString(){
+		String holeListString="";
+		for (int i=0; i<holeList.size(); i++){
+			Hole currentHole=holeList.get(i);
+			holeListString += "hole : "+i +" start location = "+currentHole.getStartingPos()+", size = "+currentHole.getSize();
+			holeListString +="\n";
+		}
+		return holeListString;
+	}
+	
 	/**
 	 * Inserts a new item
 	 */
@@ -184,6 +199,15 @@ public class HoleList {
 			return true;
 		else
 			return false;
+	}
+	
+	public int totalFreeMemory(){
+		int freeMemory=0;
+		Iterator<Hole> iter=holeList.iterator();
+		while(iter.hasNext()){
+			freeMemory+=iter.next().getSize();
+		}
+		return freeMemory;
 	}
 
 }
