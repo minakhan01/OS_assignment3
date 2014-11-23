@@ -1,0 +1,57 @@
+Memory size = 8192 bytes, allocated bytes = 488, free = 7704
+There are currently 2 holes and 2 active process
+Hole list:
+hole : 0 start location = 0, size = 234
+hole : 1 start location = 722, size = 7470
+
+Process list:
+process id=2, size=458 allocation=458
+text start=234, size=300
+data start=534, size=98
+heap start=632, size=60
+process id=3, size=30 allocation=30
+text start=692, size=15
+data start=707, size=8
+heap start=715, size=7
+
+Total Internal Fragmentation = 0 bytes
+Failed allocations (No memory) = 0
+Failed allocations (External Fragmentation) = 0
+
+------------End Print-------------
+
+Memory size = 8192 bytes, allocated bytes = 1348, free = 6844
+There are currently 3 holes and 2 active process
+Hole list:
+hole : 0 start location = 692, size = 30
+hole : 1 start location = 200, size = 34
+hole : 2 start location = 1412, size = 6780
+
+Process list:
+process id=2, size=458 allocation=458
+text start=234, size=300
+data start=534, size=98
+heap start=632, size=60
+process id=4, size=890 allocation=890
+text start=0, size=200
+data start=722, size=450
+heap start=1172, size=240
+
+Total Internal Fragmentation = 0 bytes
+Failed allocations (No memory) = 0
+Failed allocations (External Fragmentation) = 0
+
+------------End Print-------------
+
+Memory size = 8192 bytes, allocated bytes = 0, free = 8192
+There are currently 1 holes and 0 active process
+Hole list:
+hole : 0 start location = 0, size = 8192
+
+Process list:
+
+Total Internal Fragmentation = 0 bytes
+Failed allocations (No memory) = 0
+Failed allocations (External Fragmentation) = 0
+
+------------End Print-------------
