@@ -83,6 +83,7 @@ public class HoleList {
 
 	public void removeByIndex(int index) {
 		holeList.remove(index);
+		Collections.sort(holeList);
 	}
 
 	public Hole reAllocateHole(int requiredSize) {
