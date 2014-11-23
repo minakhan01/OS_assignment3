@@ -100,22 +100,26 @@ public class PagingMemoryManager extends MemoryManager {
 
 			// initialize the pages array for the process to record
 			Page[] pagesForThisProcess = new Page[numPagesNeeded];
+			
 			int lookUpStartIndex = 0;
+			
 			// look for a page for each page needed
 			for (int i = 0; i < numPagesNeeded; i++) {
 				
 				int index = findNextAvailablePage(lookUpStartIndex);			
-				lookUpStartIndex = index+1;
+				lookUpStartIndex = index;
+				
 				// Found a page now
 				System.out.println("found page " + index + "for process"
 						+ newProcess.getId());
 				Page p = pages[index];
 
 				// if this is the last page, it might not be fully utilized
-				if (i == numPagesNeeded - 1) {
+				if ((i == numPagesNeeded - 1) && sizeNeededToFill != 32) {
 					p.setUsedSize(sizeOfLastPage);
 					totalInteralFragmentation += sizeNeededToFill;
 					newProcess.setIntFragInPaging(sizeNeededToFill);
+					System.out.println();
 				} else {
 
 					// previous pages should all be using 32 bytes
@@ -185,7 +189,7 @@ public class PagingMemoryManager extends MemoryManager {
 
 			// free all the pages this process is using
 			for (int i = 0; i < targetPages.length; i++) {
-				Page ithPage = pages[i];
+				Page ithPage = targetPages[i];
 				ithPage.free();
 				success = pagesInUse.remove(ithPage);
 
@@ -195,7 +199,6 @@ public class PagingMemoryManager extends MemoryManager {
 
 			// then free up the internal fragmentation this process caused
 			totalInteralFragmentation -= intFragToBeFreed;
-
 			System.out.println("int frag is now " + totalInteralFragmentation
 					+ ", after removing " + intFragToBeFreed);
 		} else {

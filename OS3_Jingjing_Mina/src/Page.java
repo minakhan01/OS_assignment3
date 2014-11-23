@@ -1,7 +1,7 @@
 public class Page {
 
 	private int virtualPosition;
-	private int physicalPosition;
+	private final int physicalPosition;
 	private int usedSize;
 	private Process assignedProcess;
 	
@@ -62,13 +62,6 @@ public class Page {
 		this.virtualPosition = virtualPosition;
 	}
 
-	/**
-	 * @param physicalPosition
-	 *            the physicalPosition to set
-	 */
-	public void setPhysicalPosition(int physicalPosition) {
-		this.physicalPosition = physicalPosition;
-	}
 
 	/**
 	 * @param usedSize
