@@ -35,11 +35,10 @@ public class HoleList {
 	 */
 	public void insert(Hole x) {
 //		System.out.println("inserting");
-		int index = bestFitIndex(x.getSize());
-		holeList.add(index, x);
+		holeList.add(x);
 		Collections.sort(holeList);
 	}
-	
+
 	public int bestFitIndex(int requiredSize) {
 //		System.out.println("best fit");
 		
@@ -47,10 +46,15 @@ public class HoleList {
         int hi = holeList.size() - 1;
         
         
-        int best_index=0;
+        int best_index=-1;
         while (lo <= hi) {
-        	if (lo == hi)
-    			return lo;
+        	if (lo == hi){
+        		if (requiredSize<=holeList.get(lo).getSize())
+        			return lo;
+        		else
+        			return -1;
+        	}
+    			
         	
             int mid = lo + (hi - lo) / 2;
             if (requiredSize < holeList.get(mid).getSize()){
